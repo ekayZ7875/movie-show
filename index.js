@@ -18,6 +18,7 @@ const seatPrice = 250
 
 app.use(express.json())
 app.use(bodyparser.json())
+env.config()
 
 
 
