@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken')
 
 const port = 3000
 const app = express()
-const secretKey = 'secretkey'
+const secretKey_e = 'secretkey_e'
 
 
 app.use(express.json())
@@ -18,7 +18,23 @@ app.use(bodyparser.json())
 
 
 
-
+function authenticateTokenE(req, res, next) {
+    const token = req.headers.authorization;
+  
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+  
+    jwt.verify(token, secretKey_e, (error, decoded) => {
+      if (error) {
+        console.error(error);
+        return res.status(401).json({ message: 'Invalid token' });
+      }
+  
+      req.user = decoded;
+      next();
+    });
+  }
 
 app.post('/employee-register',async(req,res)=>{
     try{
@@ -53,7 +69,7 @@ if(!username_e||!password_e){
 
         if (passwordMatch && user) {
     
-            const token = jwt.sign({userId:user.id,username_e:user,username:user.username_e},secretKey,{expiresIn:'1h'})   // generating the token
+            const token = jwt.sign({userId:user.id,username_e:user,username:user.username_e},secretKey_e,{expiresIn:'1h'})   // generating the token
             res.json({message:"login successfull",token})
             
         } else {
@@ -68,7 +84,7 @@ if(!username_e||!password_e){
     }
 })
 
-app.post('/post-movies',async(req,res)=>{
+app.post('/post-movies',authenticateTokenE,async(req,res)=>{
     try {
 
         
@@ -91,7 +107,7 @@ app.post('/post-movies',async(req,res)=>{
     }
 })
 
-app.post('/post-theatres',async(req,res)=>{
+app.post('/post-theatres',authenticateTokenE,async(req,res)=>{
     try {
 
         const{ name,location } = req.body
@@ -113,7 +129,7 @@ app.post('/post-theatres',async(req,res)=>{
 
 })
 
-app.post('/post-shows',async(req,res)=>{
+app.post('/post-shows',authenticateTokenE,async(req,res)=>{
     try {
 
         const { movie_id,theater_id,start_time } = req.body
