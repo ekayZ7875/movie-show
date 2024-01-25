@@ -18,7 +18,7 @@ const seatPrice = 250
 
 app.use(express.json())
 app.use(bodyparser.json())
-env.config()
+
 
 
 
@@ -100,35 +100,6 @@ function authenticateToken(req, res, next) {
 
 
 
-//route for posting the movie
-app.post('/post-movies',async(req,res)=>{
-
-    try {
-
-        
-        const{ title,description,poster_url } = req.body
-
-       const movie = await db('movies').insert({
-        title,
-        description,
-        poster_url
-
-       }).returning('*')
-
-       res.json({ message:'movie inserted successfull', movie: movie[0] });
-        
-    } catch (error) {
-
-        console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-        
-    }
-
-})
-
-
-
-
 //route for getting the movies through authentication
 app.get('/movies',authenticateToken,async(req,res)=>{
 
@@ -141,35 +112,6 @@ app.get('/movies',authenticateToken,async(req,res)=>{
       }
 
 })
-
-
-
-
-//route for posting theatres
-app.post('/post-theatres',async(req,res)=>{
-
-    try {
-
-        const{ name,location } = req.body
-
-       const theatre = await db('theaters').insert({
-        name,
-        location
-
-       }).returning('*')
-
-       res.json({ message:'theatre inserted successfull'});
-        
-    } catch (error) {
-
-        console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-        
-    }
-
-})    
-
-
 
 
 //route for getting available theatres through authentication
@@ -185,38 +127,6 @@ app.get('/theatres',authenticateToken,async(req,res)=>{
 
 
 
-
-
-//route for creating the new show
-app.post('/post-shows',async(req,res)=>{
-    try {
-
-        const { movie_id,theater_id,start_time } = req.body
-
-        if (!movie_id || !theater_id || !start_time) {
-            return res.status(400).json({ error: 'Invalid request. Please provide movie_id, theater_id, and start_time.' });
-            console.log(error);
-          }
-
-          const show = await db('shows').insert({
-            movie_id,
-            theater_id,
-            start_time
-          }).returning('*');
-      
-          res.json({ message:'show inserted successfully', show: show[0] });
-        } catch (error) {
-          console.error(error);
-          res.status(500).json({ error: 'Internal Server Error' });
-        }
-      
-})
-
-
-
-
-
-
 //route for getting available shows through authentication
 app.get('/shows',authenticateToken,async(req,res)=>{
 
@@ -229,8 +139,6 @@ app.get('/shows',authenticateToken,async(req,res)=>{
       }
 
 })
-
-
 
 
 
