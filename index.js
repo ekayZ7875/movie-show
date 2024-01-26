@@ -192,47 +192,12 @@ app.post('/bookings', authenticateToken, async (req, res) => {
               seats_booked,
             }).returning('*');
       
-            
-
-
 
    if(booking){
 
-        async function sendMail(){
-
-const transporter = nodemailer.createTransport({
-
-     service:'gmail',
-     auth:{
-         user: 'eklavyasinghparihar7875@gmail.com',
-        pass: 'jvqzdotwgcsunixx'
-     }
-               
-            
-        })
-
-
-const mailOptions = {
-    from: 'eklavyasinghparihar7875@gmail.com',
-    to: 'jaybaghel7005@gmail.com',
-    subject: 'Booking Confirmation',
-    text: 'Thank you for booking!',
-}
-
-try{
-    const result = await transporter.sendMail(mailOptions)
-    console.log('email sent successfully')
-} catch(error){
-     console.log('error',error)
-}
-
-}
-
-sendMail()
-        
- 
+    res.json({ booking: booking[0],totalAmount })
    }
-    res.json({ booking: booking[0],totalAmount });
+    
        
 
 const bookingTickets = await db('tickets_1').insert({
@@ -243,12 +208,34 @@ const bookingTickets = await db('tickets_1').insert({
     seats_booked
 
 })
-
-if(!bookingTickets){
-    res.json('error while downloading ticket')
-} else{
-    res.json("tickets downloaded successfully")
-}
+async function sendMail(){
+    const transporter  =nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'eklavyasinghparihar7875@gmail.com',
+            pass: 'qnsqoemikkgsyutn'
+        }
+    })
+    
+    
+    
+    const mailOptions ={
+        from:'eklavyasinghparihar7875@gmail.com',
+        to: 'jaybaghel7005@gmail.com',
+        subject: 'Booking Confirmation',
+        text: 'Your Booking Is Confirmed!'
+    }
+    
+    try {
+        const result = await transporter.sendMail(mailOptions)
+        console.log('email sent successfully');
+        
+    } catch (error) {
+        console.log('error',error)
+        
+    }
+    }
+    sendMail()
 
 
     } catch(error){
