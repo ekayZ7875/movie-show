@@ -4,6 +4,7 @@ const db = require('./db/db.js')
 const bodyparser = require('body-parser')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 
 
 
@@ -12,6 +13,7 @@ const jwt = require('jsonwebtoken')
 const app = express()
 const secretKey = 'secretkey'
 const seatPrice = 250
+
 
 
 
@@ -144,8 +146,12 @@ app.get('/shows',authenticateToken,async(req,res)=>{
 
 //route for posting bookings through authentication
 app.post('/bookings', authenticateToken, async (req, res) => {
+
+
     try {
+
     const { user_id, show_id, seats_booked } = req.body
+
     if (!user_id || !show_id || !seats_booked) {
         return res.status(400).json({ error: 'Invalid request. Please provide user_id, show_id, and seats_booked.' });
       }
@@ -190,14 +196,44 @@ app.post('/bookings', authenticateToken, async (req, res) => {
 
 
 
-    if(!booking){
-        res.json('some error ocuured while booking please try again')
-       } else{
-        res.json({ success: true, booking: booking[0],totalAmount });
-       }
+   if(booking){
+
+        async function sendMail(){
+
+const transporter = nodemailer.createTransport({
+
+     service:'gmail',
+     auth:{
+         user: 'eklavyasinghparihar7875@gmail.com',
+        pass: 'jvqzdotwgcsunixx'
+     }
+               
+            
+        })
 
 
+const mailOptions = {
+    from: 'eklavyasinghparihar7875@gmail.com',
+    to: 'jaybaghel7005@gmail.com',
+    subject: 'Booking Confirmation',
+    text: 'Thank you for booking!',
+}
 
+try{
+    const result = await transporter.sendMail(mailOptions)
+    console.log('email sent successfully')
+} catch(error){
+     console.log('error',error)
+}
+
+}
+
+sendMail()
+        
+ 
+   }
+    res.json({ booking: booking[0],totalAmount });
+       
 
 const bookingTickets = await db('tickets_1').insert({
 
@@ -215,16 +251,14 @@ if(!bookingTickets){
 }
 
 
-
-
-
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    } catch(error){
+        res.json('error while booking show please try again')
     }
-  });
-  
 
+
+    
+  
+})
 
 
 app.get('/get-tickets',authenticateToken,async(req,res)=>{
@@ -293,6 +327,6 @@ app.post('/user-logout',authenticateToken,async(req,res)=>{
 
 
 
-app.listen(process.env.PORT,()=>{
-    console.log('app is listening on port 5000',);
+app.listen(5000,()=>{
+    console.log('app is listening on port 5000')
 })
