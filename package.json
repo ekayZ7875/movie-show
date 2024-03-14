@@ -8,7 +8,10 @@
     "dev": "nodemon index.js",
     "dev_e": "nodemon index_e.js",
     "migrations": " npx knex migrate:latest --knexfile db/knexfile.js",
-    "for init": "npx knex migrate:make init --migrations-directory db/migrations"
+    "for init": "npx knex migrate:make init --migrations-directory db/migrations",
+    "migration:create": "npx knex migrate:make",
+    "migration:all:up": "npx knex migrate:latest",
+    "migration:all:down": "npx knex migrate:rollback --all"
   },
   "author": "",
   "license": "ISC",
