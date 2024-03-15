@@ -1,8 +1,8 @@
 const { Router } = require('express')
-const{ createUser,loginUser,logoutUser } = require('../controllerrs/user.controllers.js')
-const{ getMovies,getShows } = require('../controllerrs/get.controllers.js')
-const{ bookings } = require('../controllerrs/bookings.controllers.js')
-
+const{ createUser,loginUser,logoutUser } = require('../controllers/user.controllers.js') 
+const{ getMovies,getShows } = require('../movie-controllers/get.controllers.js')
+const{ bookings } = require('../movie-controllers/bookings.controllers.js')
+const{ forgetPassword,resetPassword } = require('../controllers/forget-password.controllers.js')
 
 const router = Router()
 
@@ -12,6 +12,8 @@ router.route('/logout-user').post(logoutUser)
 router.route('/get-movies').get(getMovies)
 router.route('/get-shows').get(getShows)
 router.route('bookings').get(bookings)
+router.route('/forget-password').post(forgetPassword)
+router.route('/reset-password').post(resetPassword)
 
 
 
