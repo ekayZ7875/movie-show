@@ -3,11 +3,10 @@
  */
 module.exports = {
 
-
   development: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
-      database: 'database_indhan_001',
+      database: 'CIneverse',
       user:     'postgres',
       password: 'tanurt@123'
     },
@@ -19,7 +18,7 @@ module.exports = {
       tableName: 'knex_migrations'
     },
     seeds: {
-      directory: '../db/seeds'
+      directory: './seeds'
     }
     
   },

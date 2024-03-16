@@ -4,10 +4,11 @@
  */
 exports.up = function(knex) {
 
-   return knex.schema.createTable('theaters', function (table) {
+    return  knex.schema.createTable('employees', function (table) {
         table.increments('id').primary();
-        table.string('name').notNullable();
-        table.string('location');
+        table.string('username_e').notNullable().unique();
+        table.string('email_e').notNullable().unique();
+        table.string('password_e').notNullable();
         table.timestamps(true, true);
       })
   
@@ -19,6 +20,6 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
 
-  return  knex.schema.dropTable('theaters')
+    return  knex.schema.dropTable('employees')
   
 };
