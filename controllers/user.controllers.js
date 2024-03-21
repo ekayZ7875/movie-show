@@ -18,7 +18,7 @@ res.json({message:'User Created Successfully'})
         }  
         } catch(error){
             console.error(error)
-            res.json({message:'Some intrenal error occurred'})
+            res.json({message:'Some internal error occurred'})
         }
     })
     
