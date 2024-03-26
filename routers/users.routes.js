@@ -3,6 +3,7 @@ const{ createUser,loginUser,logoutUser } = require('../controllers/user.controll
 const{ getMovies,getShows } = require('../movie-controllers/get.controllers.js')
 const{ bookings } = require('../movie-controllers/bookings.controllers.js')
 const{ forgetPassword,resetPassword } = require('../controllers/forget-password.controllers.js')
+const{ getComedyShows,comedyShowsBookings } = require('../comedy-shows-controllers/comedy-shows.controllers.js')
 
 const router = Router()
 
@@ -14,6 +15,8 @@ router.route('/get-shows').get(getShows)
 router.route('bookings').get(bookings)
 router.route('/forget-password').post(forgetPassword)
 router.route('/reset-password').post(resetPassword)
+router.route('/get-comedy').get(getComedyShows)
+router.route('/book-comedy-shows').post(comedyShowsBookings)
 
 
 
