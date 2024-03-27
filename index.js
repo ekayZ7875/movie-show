@@ -4,7 +4,7 @@ const db = require('./db/db.js')
 const bodyparser = require('body-parser')
 const router = require('./routers/users.routes.js')
 
-const port = 5000
+const port = process.env.PORT
 const app = express()
 const secretKey = 'secretkey'
 
@@ -15,5 +15,5 @@ app.use(router)
 
 
 app.listen(port,()=>{
-    console.log('app is listening on port',port)
+    console.log('app is listening on port 5000')
 })

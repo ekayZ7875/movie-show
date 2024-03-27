@@ -6,9 +6,9 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      database: 'CIneverse',
-      user:     'postgres',
-      password: 'tanurt@123'
+      database: process.env.DATABASE,
+      user:process.env.USER,
+      password:process.env.PASSWORD
     },
     pool: {
       min: 2,
