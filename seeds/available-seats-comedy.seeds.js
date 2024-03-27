@@ -8,18 +8,18 @@ exports.seed = async function(knex) {
   await knex('available_seats').insert([
    {
     id:1,
-    show_id:1,
-    num_available_seats:5
+    show_id:'1',
+    num_available_seats:'20'
    },
    {
     id:2,
-    show_id:3,
-    num_available_seats:5
+    show_id:'3',
+    num_available_seats:'5'
    },
    {
     id:3,
-    show_id:2,
-    num_available_seats:5
+    show_id:'2',
+    num_available_seats:'5'
    }
 
   ]);
