@@ -41,8 +41,9 @@ const comedyShowsBookings = (async(req,res)=>{
                 message:'Requested number of seats are not available'
             })
         }else{
+
       const totalPrice = num_tickets*show.price
-   
+      
 const bookingSuccess = await db.transaction(async (trx) => {
     await trx('available_seats')
     .where({ show_id })

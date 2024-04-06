@@ -5,7 +5,9 @@ const{ bookings } = require('../movie-controllers/bookings.controllers.js')
 const{ forgetPassword,resetPassword } = require('../controllers/forget-password.controllers.js')
 const{ getComedyShows,comedyShowsBookings } = require('../comedy-shows-controllers/comedy-shows.controllers.js')
 
+
 const router = Router()
+
 
 router.route('/register-user').post(createUser)
 router.route('/login-user').post(loginUser)
