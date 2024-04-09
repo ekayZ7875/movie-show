@@ -4,11 +4,13 @@
 module.exports = {
 
   development: {
-    client: 'pg',
+    client: 'mysql',
     connection: {
-      database: process.env.DATABASE,
-      user:process.env.USER,
-      password:process.env.PASSWORD
+      host : '127.0.0.1',
+      port : 3306,
+      user : 'root',
+      password : 'root123',
+      database : 'cineverse',
     },
     pool: {
       min: 2,
