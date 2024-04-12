@@ -24,7 +24,7 @@ router.route('/reset-password').post(resetPassword)
 router.route('/get-comedy').get(getComedyShows)
 router.route('/book-comedy-shows').post(authenticateToken,comedyShowsBookings)
 router.route('/get-music-shows').get(getMusicShows)
-router.route('/book-music-shows').post(authenticateToken,musicShowsBookings)
+router.route('/book-music-shows').post(musicShowsBookings)
 
 
 

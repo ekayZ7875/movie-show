@@ -3,8 +3,9 @@ const knex = require('knex')
 const db = require('./db/db.js')
 const bodyparser = require('body-parser')
 const router = require('./routers/users.routes.js')
+require('dotenv').config()
 
-const port = process.env.PORT
+const port = process.env.PORT || 5000
 const app = express()
 const secretKey = 'secretkey'
 

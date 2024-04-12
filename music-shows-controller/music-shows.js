@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer')
 const getMusicShows = async (req, res) => {
     try {
         const result = await db('music-shows').select('*');
+        console.log(result);
         res.json(result)
     } catch (error) {
         console.error(error)
@@ -59,9 +60,9 @@ const musicShowsBookings = async (req, res) => {
 
             const mailOptions = {
                 from: 'eklavyasinghparihar7875@gmail.com',
-                to: 'mudittandon202005@gmail.com',
+                to: email,
                 subject: 'Booking Confirmation',
-                text: 'Your Booking Is Confirmed!'
+                text: `Hello ${customer_name} thanks for using CineVerse enjoy your show.Here's your show_id ${show_id} with ${num_tickets}.`
             }
             try {
                 const result = await transporter.sendMail(mailOptions)
