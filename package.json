@@ -12,7 +12,7 @@
     "migration:status": "npx knex migrate:list",
     "seed:create": "npx knex seed:make",
     "seed:run": "npx knex seed:run",
-    "migrations": " npx knex migrate:latest --knexfile db/knexfile.js",
+    "migrations": " npx knex migrate:latest --knexfile knexfile.js",
     "for_init": "npx knex migrate:make init --migrations-directory db/migrations"
   },
   "author": "",
@@ -21,12 +21,15 @@
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.1",
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
+    "mysql": "^2.18.1",
     "nodemailer": "^6.9.8",
     "nodemon": "^3.0.3",
     "pg": "^8.11.3",
-    "stripe": "^14.13.0"
+    "stripe": "^14.13.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   }
 }
