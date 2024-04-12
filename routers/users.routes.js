@@ -5,6 +5,7 @@ const{ bookings } = require('../movie-controllers/bookings.controllers.js')
 const{ forgetPassword,resetPassword } = require('../controllers/forget-password.controllers.js')
 const{ getComedyShows,comedyShowsBookings } = require('../comedy-shows-controllers/comedy-shows.controllers.js')
 const{ authenticateToken } = require('../middlewares/auth.middleware.js')
+const{getMusicShows,musicShowsBookings} = require('../music-shows-controller/music-shows.js')
 
 
 
@@ -15,15 +16,15 @@ const router = Router()
 router.route('/register-user').post(createUser)
 router.route('/login-user').post(authenticateToken,loginUser)
 router.route('/logout-user').post(authenticateToken,logoutUser)
-router.route('/get-movies').get(authenticateToken,getMovies)
-router.route('/get-shows').get(authenticateToken,getShows)
+router.route('/get-movies').get(getMovies)
+router.route('/get-shows').get(getShows)
 router.route('bookings').get(authenticateToken,bookings)
 router.route('/forget-password').post(forgetPassword)
 router.route('/reset-password').post(resetPassword)
-router.route('/get-comedy').get(authenticateToken,getComedyShows)
+router.route('/get-comedy').get(getComedyShows)
 router.route('/book-comedy-shows').post(authenticateToken,comedyShowsBookings)
 router.route('/get-music-shows').get(getMusicShows)
-
+router.route('/book-music-shows').post(authenticateToken,musicShowsBookings)
 
 
 

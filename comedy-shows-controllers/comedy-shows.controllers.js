@@ -16,14 +16,14 @@ const getComedyShows = (async (req, res) => {
 const comedyShowsBookings = (async (req, res) => {
     try {
         const { show_id, customer_name, email, num_tickets } = req.body
-        const show = await db('comedy-shows').where({ id: show_id }).first()
+        const show = await db('comedy-shows').where({ id: show_id })
         if (!show) {
             res.send({
                 status: 0,
                 message: 'Show not found'
             })
         }
-        const availableSeats = await db('available_seats').where({ show_id }).first()
+        const availableSeats = await db('available_seats').where({ show_id });
         if (!availableSeats) {
             res.send({
                 status: 0,
