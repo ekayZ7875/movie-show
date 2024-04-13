@@ -6,7 +6,7 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      database: "CIneverse",
+      database: "Cineverse_ekayZ",
       user:"postgres",
       password:"tanurt@123"
     },
