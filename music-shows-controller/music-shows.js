@@ -5,14 +5,23 @@ const nodemailer = require("nodemailer");
 
 const getMusicShows = async (req, res) => {
   try {
-    const result = await db("music-shows").select("*");
-    console.log(result);
+    const result = await db("music_shows").select('show_name','show_poster_URL');
     res.json(result);
   } catch (error) {
     console.error(error);
     res.json({ messsage: "Some error ocuured while getting shows" });
   }
 };
+
+const getMusicShowsDetails = (async(req,res)=>{
+  try {
+      const details = await db('music_shows').select('venue','show_timings','available_seats','ticket_price');
+      res.json(details);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
 
 const musicShowsBookings = async (req, res) => {
   try {
@@ -84,5 +93,6 @@ const musicShowsBookings = async (req, res) => {
 
 module.exports = {
   getMusicShows,
+  getMusicShowsDetails,
   musicShowsBookings,
 };

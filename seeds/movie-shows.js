@@ -1,48 +1,53 @@
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex('Movie_Shows').del()
+  return knex('movie_shows').del()
     .then(function () {
       // Inserts seed entries
-      return knex('Movie_Shows').insert([
+      return knex('movie_shows').insert([
         { 
-          Movie_name: 'Inception', 
-          Movie_poster_URL: 'https://example.com/inception_poster.jpg', 
-          Show_timings: '2024-04-13 18:00:00', 
-          Theatre_name_location: 'ABC Theater - New York', 
-          Available_Seats: 100, 
-          Show_unique_ID: 'abc123' 
+          movie_name: 'Inception', 
+          movie_poster_URL: 'https://example.com/inception_poster.jpg', 
+          show_timings: '2024-04-13 18:00:00', 
+          theatre_name_location: 'ABC Theater - New York', 
+          available_seats: 100, 
+          show_unique_ID: 'abc123',
+          ticket_price: 150.00,
         },
         { 
-          Movie_name: 'The Dark Knight', 
-          Movie_poster_URL: 'https://example.com/dark_knight_poster.jpg', 
-          Show_timings: '2024-04-13 20:00:00', 
-          Theatre_name_location: 'XYZ Cinema - Los Angeles', 
-          Available_Seats: 150, 
-          Show_unique_ID: 'def456' 
+          movie_name: 'The Dark Knight', 
+          movie_poster_URL: 'https://example.com/dark_knight_poster.jpg', 
+          show_timings: '2024-04-13 20:00:00', 
+          theatre_name_location: 'XYZ Cinema - Los Angeles', 
+          available_seats: 150, 
+          show_unique_ID: 'def456' ,
+          ticket_price: 150.00,
         },
         { 
-          Movie_name: 'Interstellar', 
-          Movie_poster_URL: 'https://example.com/interstellar_poster.jpg', 
-          Show_timings: '2024-04-14 15:00:00', 
-          Theatre_name_location: 'PQR Multiplex - Chicago', 
-          Available_Seats: 120, 
-          Show_unique_ID: 'ghi789' 
+          movie_name: 'Interstellar', 
+          movie_poster_URL: 'https://example.com/interstellar_poster.jpg', 
+          show_timings: '2024-04-14 15:00:00', 
+          theatre_name_location: 'PQR Multiplex - Chicago', 
+          available_seats: 120, 
+          show_unique_ID: 'ghi789',
+          ticket_price: 150.00, 
         },
         { 
-          Movie_name: 'The Shawshank Redemption', 
-          Movie_poster_URL: 'https://example.com/shawshank_poster.jpg', 
-          Show_timings: '2024-04-14 18:30:00', 
-          Theatre_name_location: 'LMN Cinema - San Francisco', 
-          Available_Seats: 90, 
-          Show_unique_ID: 'jkl012' 
+          movie_name: 'The Shawshank Redemption', 
+          movie_poster_URL: 'https://example.com/shawshank_poster.jpg', 
+          show_timings: '2024-04-14 18:30:00', 
+          theatre_name_location: 'LMN Cinema - San Francisco', 
+          available_seats: 90, 
+          show_unique_ID: 'jkl012' ,
+          ticket_price: 150.00,
         },
         { 
-          Movie_name: 'Pulp Fiction', 
-          Movie_poster_URL: 'https://example.com/pulp_fiction_poster.jpg', 
-          Show_timings: '2024-04-14 21:00:00', 
-          Theatre_name_location: 'RST Theater - Miami', 
-          Available_Seats: 80, 
-          Show_unique_ID: 'mno345' 
+          movie_name: 'Pulp Fiction', 
+          movie_poster_URL: 'https://example.com/pulp_fiction_poster.jpg', 
+          show_timings: '2024-04-14 21:00:00', 
+          theatre_name_location: 'RST Theater - Miami', 
+          available_seats: 80, 
+          show_unique_ID: 'mno345' ,
+          ticket_price: 150.00,
         }
       ]);
     });
