@@ -3,7 +3,6 @@ const db = require('../db/db.js')
 const seatPrice = 250
 
 
-
 const bookings = (async(req,res)=>{
     try {
         const { user_id, show_id, seats_booked } = req.body

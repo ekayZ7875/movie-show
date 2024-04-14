@@ -3,19 +3,21 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.alterTable('Movie_Shows', (table) => {
-        // Rename column from 'Theatre_name-location' to 'Theatre_name_location'
-        table.renameColumn('Theatre_name-location', 'Theatre_name_location');
-    });
-};
+    return knex.schema.createTable('music_shows',(table)=>{
+        table.increments('music_show_id').primary()
+        table.string('show_name').notNullable()
+        table.string('show_poster_URL')
+        table.dateTime('show_timings').notNullable()
+        table.string('venue').notNullable()
+        table.integer('available_seats').notNullable()
+        table.string('show_unique_ID')
+        table.integer('ticket_price').notNullable()
+})};
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.alterTable('Movie_Shows', (table) => {
-        // Undo the column name change
-        table.renameColumn('Theatre_name_location', 'Theatre_name-location');
-    });
+    return knex.schema.dropTable('music_shows')
 };
