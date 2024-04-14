@@ -58,13 +58,9 @@ const comedyShowsBookings = async (req, res) => {
         message: "Seat limit information not found",
       });
     }
-
-    // Assuming there's only one result, directly access it at index 0
     const comedy_show = comedy_shows[0];
-
     const numAvailableSeats = comedy_show.available_seats;
     console.log(numAvailableSeats);
-
     const show_price = comedy_show.ticket_price;
     console.log(show_price);
 
@@ -95,28 +91,28 @@ const comedyShowsBookings = async (req, res) => {
       res.status(201).json({ message: "Booking successful" });
     }
 
-    // async function sendMail() {
-    //     const transporter = nodemailer.createTransport({
-    //         service: 'gmail',
-    //         auth: {
-    //             user: 'eklavyasinghparihar7875@gmail.com',
-    //             pass: 'qnsqoemikkgsyutn'
-    //         }
-    //     })
+    async function sendMail() {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "eklavyasinghparihar7875@gmail.com",
+          pass: "qnsqoemikkgsyutn",
+        },
+      });
 
-    //     const mailOptions = {
-    //         from: 'eklavyasinghparihar7875@gmail.com',
-    //         to: 'mudittandon202005@gmail.com',
-    //         subject: 'Booking Confirmation',
-    //         text: 'Your Booking Is Confirmed!'
-    //     }
-    //     try {
-    //         const result = await transporter.sendMail(mailOptions)
-    //         console.log('email sent successfully');
-    //     } catch (error) {
-    //         console.log('error', error)
-    //     }
-    // }
+      const mailOptions = {
+        from: "eklavyasinghparihar7875@gmail.com",
+        to: "mudittandon202005@gmail.com",
+        subject: "Booking Confirmation",
+        text: `Thank you for booking comedy-shows from Cineverse.Here's your booking code ${booking_code}.Enjoy your show ${QRCode}.`,
+      };
+      try {
+        const result = await transporter.sendMail(mailOptions);
+        console.log("email sent successfully");
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
     sendMail();
   } catch (error) {
     console.error(error);

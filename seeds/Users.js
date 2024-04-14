@@ -3,7 +3,7 @@ exports.seed = function(knex) {
   return knex('Users').del()
     .then(function () {
       // Inserts seed entries
-      return knex('Users').insert([
+      return knex('users').insert([
         { FullName: 'John Doe', Email: 'john@example.com', DOB: '1990-01-01', Password: 'password123', Gender: 'Male' },
         { FullName: 'Jane Smith', Email: 'jane@example.com', DOB: '1995-05-15', Password: 'securepass', Gender: 'Female' },
         { FullName: 'Michael Johnson', Email: 'michael@example.com', DOB: '1985-07-20', Password: 'mysecret', Gender: 'Male' },
