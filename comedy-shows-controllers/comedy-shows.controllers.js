@@ -1,12 +1,14 @@
 const express = require("express");
 const db = require("../db/db.js");
 const sendMail = require("../middlewares/nodemailer.middleware.js");
+const nodemailer = require("nodemailer");
+const { v4: uuidv4 } = require("uuid");
+const qrCode = require("qrcode");
 const {
   generateRandomString,
   generateRandomString8,
   generateRandomCharacters,
 } = require("../utils/generateRandomStringOrNumber.js");
-const nodemailer = require("nodemailer");
 
 const getComedyShows = async (req, res) => {
   try {
@@ -72,23 +74,26 @@ const comedyShowsBookings = async (req, res) => {
     } else {
       const booking_code = generateRandomCharacters(12);
       const totalPrice = parseInt(num_tickets * show_price);
+      const bookingData = {
+        show_id,
+        booking_code,
+        user_name,
+        show_type,
+        email,
+        total_price: totalPrice,
+        num_tickets,
+        total_price: totalPrice,
+      };
+      const bookingJsonString = JSON.stringify(bookingData)
+      const QRCode = await qrCode.toDataURL(bookingJsonString)
 
       const bookingSuccess = await db.transaction(async (trx) => {
         await trx("comedy_shows")
           .where({ comedy_show_id: show_id })
           .decrement("available_seats", num_tickets);
-        await trx("bookings").insert({
-          show_id,
-          booking_code,
-          user_name,
-          show_type,
-          email,
-          total_price: totalPrice,
-          num_tickets,
-          total_price: totalPrice,
-        });
+        await trx("bookings").insert(bookingData);
       });
-      res.status(201).json({ message: "Booking successful" });
+      res.status(201).json({ message: "Booking successful",QRCode});
     }
 
     async function sendMail() {
@@ -104,7 +109,7 @@ const comedyShowsBookings = async (req, res) => {
         from: "eklavyasinghparihar7875@gmail.com",
         to: "mudittandon202005@gmail.com",
         subject: "Booking Confirmation",
-        text: `Thank you for booking comedy-shows from Cineverse.Here's your booking code ${booking_code}.Enjoy your show ${QRCode}.`,
+        text: `Thank you for booking comedy-shows from Cineverse.Here's your booking code ${booking_code}.`,
       };
       try {
         const result = await transporter.sendMail(mailOptions);
