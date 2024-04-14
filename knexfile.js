@@ -4,13 +4,11 @@
 module.exports = {
 
   development: {
-    client: 'mysql',
+    client: 'pg',
     connection: {
-      host : '127.0.0.1',
-      port : 3306,
-      user : 'root',
-      password : 'root123',
-      database : 'Cineverse_ekayZ',
+      database: "Cineverse_ekayZ",
+      user:"postgres",
+      password:"tanurt@123"
     },
     pool: {
       min: 2,
@@ -18,6 +16,13 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations'
-    },      
-  },  
+    },
+    seeds: {
+      directory: './seeds'
+    }
+    
+  },
+
+  
+
 };
