@@ -6,17 +6,28 @@ const nodemailer = require('nodemailer')
 
 const getComedyShows = (async (req, res) => {
     try {
-        const comedyShows = await db('comedy-shows').select('*')
+        const comedyShows = await db('comedy_shows').select('show_name','show_poster_URL')
         res.json(comedyShows)
     } catch (error) {
         console.error(error)
         res.json({ messsage: "Some error ocuured while getting shows" })
     }
 })
+
+const getComedyShowDetails = (async(req,res)=>{
+    try {
+        const details = await db('comedy_shows').select('venue','show_timings','available_seats','ticket_price');
+        res.json(details);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+})
+
 const comedyShowsBookings = (async (req, res) => {
     try {
         const { show_id, customer_name, email, num_tickets } = req.body
-        const show = await db('comedy-shows').where({ id: show_id })
+        const show = await db('comedy_shows').where({ id: show_id })
         if (!show) {
             res.send({
                 status: 0,
@@ -83,5 +94,6 @@ const comedyShowsBookings = (async (req, res) => {
 
 module.exports = {
     getComedyShows,
+    getComedyShowDetails,
     comedyShowsBookings
 }
