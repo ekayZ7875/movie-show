@@ -1,13 +1,12 @@
 const express = require("express");
 const db = require("../db/db.js");
 const sendMail = require("../middlewares/nodemailer.middleware.js");
-const{
+const {
   generateRandomString,
-    generateRandomString8,
-    generateRandomCharacters,
-} = require("../utils/generateRandomStringOrNumber.js")
+  generateRandomString8,
+  generateRandomCharacters,
+} = require("../utils/generateRandomStringOrNumber.js");
 const nodemailer = require("nodemailer");
-
 
 const getComedyShows = async (req, res) => {
   try {
@@ -39,35 +38,48 @@ const getComedyShowDetails = async (req, res) => {
 
 const comedyShowsBookings = async (req, res) => {
   try {
-    const { show_id, customer_name, email, num_tickets } = req.body;
-    const show = await db("comedy_shows").where({comedy_show_id: show_id });
+    const { show_id, user_name, email, show_type, num_tickets } = req.body;
+    const show = await db("comedy_shows").where({ comedy_show_id: show_id });
     if (!show) {
       res.send({
         status: 0,
         message: "Show not found",
       });
     }
-    const availableSeats = await db("comedy_shows").where({ comedy_show_id: show_id});
-    if (!availableSeats) {
-      res.send({
+    const comedy_shows = await db("comedy_shows").where({
+      comedy_show_id: show_id,
+    });
+
+    console.log(comedy_shows);
+
+    if (comedy_shows.length === 0) {
+      return res.send({
         status: 0,
         message: "Seat limit information not found",
       });
     }
-    const numAvailableSeats = availableSeats.available_seats;
-    const show_price = availableSeats.ticket_price
+
+    // Assuming there's only one result, directly access it at index 0
+    const comedy_show = comedy_shows[0];
+
+    const numAvailableSeats = comedy_show.available_seats;
+    console.log(numAvailableSeats);
+
+    const show_price = comedy_show.ticket_price;
+    console.log(show_price);
+
     if (numAvailableSeats < num_tickets) {
       res.send({
         status: 0,
         message: "Requested number of seats are not available",
       });
     } else {
-      const booking_code = generateRandomCharacters(12)
-      const totalPrice = num_tickets * show.price;
+      const booking_code = generateRandomCharacters(12);
+      const totalPrice = parseInt(num_tickets * show_price);
 
       const bookingSuccess = await db.transaction(async (trx) => {
         await trx("comedy_shows")
-          .where({comedy_show_id: show_id })
+          .where({ comedy_show_id: show_id })
           .decrement("available_seats", num_tickets);
         await trx("bookings").insert({
           show_id,
@@ -75,8 +87,7 @@ const comedyShowsBookings = async (req, res) => {
           user_name,
           show_type,
           email,
-          total_price:totalPrice,
-          QR_code_url,
+          total_price: totalPrice,
           num_tickets,
           total_price: totalPrice,
         });
