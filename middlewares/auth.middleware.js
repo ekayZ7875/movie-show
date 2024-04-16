@@ -6,7 +6,7 @@ function authenticateToken(req, res, next) {
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
     }
-    jwt.verify(token, secretKey, (error, decoded) => {
+    jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
       if (error) {
         console.error(error);
         return res.status(401).json({ message: 'Invalid token' });

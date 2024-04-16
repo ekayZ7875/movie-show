@@ -1,7 +1,7 @@
 const express = require("express");
 const db = require("../db/db.js");
 const sendMail = require("../middlewares/nodemailer.middleware.js");
-const qrCode = require(qrcode)
+const qrCode = require("qrcode")
 const nodemailer = require("nodemailer");
 
 const musicShowsBookings = async (req, res) => {
@@ -93,7 +93,5 @@ const musicShowsBookings = async (req, res) => {
   }
 };
 module.exports = {
-  getMusicShows,
-  getMusicShowsDetails,
   musicShowsBookings,
 };
