@@ -84,8 +84,8 @@ const comedyShowsBookings = async (req, res) => {
         num_tickets,
         total_price: totalPrice,
       };
-      const bookingJsonString = JSON.stringify(bookingData)
-      const QRCode = await qrCode.toDataURL(bookingJsonString)
+      const bookingJsonString = JSON.stringify(bookingData);
+      const QRCode = await qrCode.toDataURL(bookingJsonString);
 
       const bookingSuccess = await db.transaction(async (trx) => {
         await trx("comedy_shows")
@@ -93,7 +93,7 @@ const comedyShowsBookings = async (req, res) => {
           .decrement("available_seats", num_tickets);
         await trx("bookings").insert(bookingData);
       });
-      res.status(201).json({ message: "Booking successful",QRCode});
+      res.status(201).json({ message: "Booking successful", QRCode });
     }
 
     async function sendMail() {
