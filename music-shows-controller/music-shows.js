@@ -1,67 +1,67 @@
 const express = require("express");
 const db = require("../db/db.js");
 const sendMail = require("../middlewares/nodemailer.middleware.js");
+const qrCode = require(qrcode)
 const nodemailer = require("nodemailer");
-
-const getMusicShows = async (req, res) => {
-  try {
-    const result = await db("music_shows").select('show_name','show_poster_URL');
-    res.json(result);
-  } catch (error) {
-    console.error(error);
-    res.json({ messsage: "Some error ocuured while getting shows" });
-  }
-};
-
-const getMusicShowsDetails = (async(req,res)=>{
-  try {
-      const details = await db('music_shows').select('venue','show_timings','available_seats','ticket_price');
-      res.json(details);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-})
 
 const musicShowsBookings = async (req, res) => {
   try {
-    const { show_id, customer_name, email, num_tickets } = req.body;
-    const show = await db("music-shows").where({ show_id });
-    console.log(show);
+    const { show_id, user_name, email, show_type, num_tickets } = req.body;
+    const show = await db("movie_shows").where({ music_show_id: show_id });
     if (!show) {
       res.send({
-        status: 404,
+        status: 0,
         message: "Show not found",
       });
     }
-    const available_seats = await db("music-seats").where({ show_id });
-    const numAvailableSeats = availableSeats.available_seats;
-    if (!available_seats) {
-      res.send({
-        status: 404,
+    const music_shows = await db("movie_shows").where({
+      music_show_id: show_id,
+    });
+
+    console.log(comedy_shows);
+
+    if (comedy_shows.length === 0) {
+      return res.send({
+        status: 0,
         message: "Seat limit information not found",
       });
-    } else if (numAvailableSeats < num_tickets) {
+    }
+    
+    const numAvailableSeats = music_shows.available_seats;
+    console.log(numAvailableSeats);
+    const show_price = music_shows.ticket_price;
+    console.log(show_price);
+
+    if (numAvailableSeats < num_tickets) {
       res.send({
-        status: 404,
+        status: 0,
         message: "Requested number of seats are not available",
       });
     } else {
-      const totalPrice = num_tickets * show.price;
+      const booking_code = generateRandomCharacters(12);
+      const totalPrice = parseInt(num_tickets * show_price);
+      const bookingData = {
+        show_id,
+        booking_code,
+        user_name,
+        show_type,
+        email,
+        total_price: totalPrice,
+        num_tickets,
+        total_price: totalPrice,
+      };
+      const bookingJsonString = JSON.stringify(bookingData);
+      const QRCode = await qrCode.toDataURL(bookingJsonString);
+
       const bookingSuccess = await db.transaction(async (trx) => {
-        await trx("music-seats")
-          .where({ show_id })
+        await trx("music_shows")
+          .where({ comedy_show_id: show_id })
           .decrement("available_seats", num_tickets);
-        await trx("music-bookings").insert({
-          show_id,
-          customer_name,
-          email,
-          num_tickets,
-          total_price: totalPrice,
-        });
+        await trx("bookings").insert(bookingData);
       });
-      res.status(201).json({ message: "Booking successful" });
+      res.status(201).json({ message: "Booking successful", QRCode });
     }
+
     async function sendMail() {
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -73,9 +73,9 @@ const musicShowsBookings = async (req, res) => {
 
       const mailOptions = {
         from: "eklavyasinghparihar7875@gmail.com",
-        to: email,
+        to: "mudittandon202005@gmail.com",
         subject: "Booking Confirmation",
-        text: `Hello ${customer_name} thanks for using CineVerse enjoy your show.Here's your show_id ${show_id} with ${num_tickets}.`,
+        text: `Thank you for booking music-shows from Cineverse.Here's your booking code ${booking_code}.`,
       };
       try {
         const result = await transporter.sendMail(mailOptions);
@@ -84,13 +84,14 @@ const musicShowsBookings = async (req, res) => {
         console.log("error", error);
       }
     }
+    if(bookingSuccess){
     sendMail();
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 module.exports = {
   getMusicShows,
   getMusicShowsDetails,

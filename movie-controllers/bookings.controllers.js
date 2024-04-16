@@ -1,76 +1,96 @@
-const nodemailer = require('nodemailer')
-const db = require('../db/db.js')
-const seatPrice = 250.00;
+const nodemailer = require("nodemailer");
+const db = require("../db/db.js");
+const qrCode = require('qrcode')
 
-
-const bookings = (async (req, res) => {
-    try {
-        const { user_id, show_id, seats_booked } = req.body
-
-        if (!user_id || !show_id || !seats_booked) {
-            return res.status(400).json({ error: 'Invalid request. Please provide user_id, show_id, and seats_booked.' });
-        }
-        const totalAmount = seats_booked * seatPrice;
-        const show = await db('movie_shows').where({ movie_id: show_id });
-        if (!show) {
-            return res.status(404).json({ error: 'Show not found.' });
-        }
-        const bookedSeatsCount = await db('bookings')
-            .where({ show_id })
-            .sum('seats_booked')
-            .first();
-
-        const availableSeats = show.total_seats - (bookedSeatsCount.sum || 0);
-        const theaterSeatLimit = 5000;
-        if (seats_booked > availableSeats || (bookedSeatsCount.sum || 0) > theaterSeatLimit) {
-            return res.status(400).json({ error: `Not enough available seats or exceeding the theater's seat limit of ${theaterSeatLimit} seats.` });
-        }
-        const booking = await db('bookings').insert({
-            user_id,
-            show_id,
-            seats_booked,
-        }).returning('*')
-
-        if (booking) {
-            res.json({ booking: booking[0], totalAmount })
-        }
-        const bookingTickets = await db('tickets_1').insert({
-            user_id,
-            show_id,
-            ticket_price: totalAmount,
-            seats_booked
-        })
-        async function sendMail() {
-            const transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: 'eklavyasinghparihar7875@gmail.com',
-                    pass: 'qnsqoemikkgsyutn'
-                }
-            })
-
-            const mailOptions = {
-                from: 'eklavyasinghparihar7875@gmail.com',
-                to: 'mudittandon202005@gmail.com',
-                subject: 'Booking Confirmation',
-                text: 'Your Booking Is Confirmed!'
-            }
-
-            try {
-                const result = await transporter.sendMail(mailOptions)
-                console.log('email sent successfully');
-            } catch (error) {
-                console.log('error', error)
-            }
-        }
-        sendMail()
-    } catch (error) {
-        res.json('error while booking show please try again')
+const movieShowsBookings = async (req, res) => {
+  try {
+    const { show_id, user_name, email, show_type, num_tickets } = req.body;
+    const show = await db("movie_shows").where({ movie_id: show_id });
+    if (!show) {
+      res.send({
+        status: 0,
+        message: "Show not found",
+      });
     }
-})
+    const movie_shows = await db("movie_shows").where({
+      movie_id: show_id,
+    });
 
+    console.log(comedy_shows);
 
+    if (comedy_shows.length === 0) {
+      return res.send({
+        status: 0,
+        message: "Seat limit information not found",
+      });
+    }
+    
+    const numAvailableSeats = movie_shows.available_seats;
+    console.log(numAvailableSeats);
+    const show_price = movie_shows.ticket_price;
+    console.log(show_price);
+
+    if (numAvailableSeats < num_tickets) {
+      res.send({
+        status: 0,
+        message: "Requested number of seats are not available",
+      });
+    } else {
+      const booking_code = generateRandomCharacters(12);
+      const totalPrice = parseInt(num_tickets * show_price);
+      const bookingData = {
+        show_id,
+        booking_code,
+        user_name,
+        show_type,
+        email,
+        total_price: totalPrice,
+        num_tickets,
+        total_price: totalPrice,
+      };
+      const bookingJsonString = JSON.stringify(bookingData);
+      const QRCode = await qrCode.toDataURL(bookingJsonString);
+
+      const bookingSuccess = await db.transaction(async (trx) => {
+        await trx("movie_shows")
+          .where({ comedy_show_id: show_id })
+          .decrement("available_seats", num_tickets);
+        await trx("bookings").insert(bookingData);
+      });
+      res.status(201).json({ message: "Booking successful", QRCode });
+    }
+
+    async function sendMail() {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "eklavyasinghparihar7875@gmail.com",
+          pass: "qnsqoemikkgsyutn",
+        },
+      });
+
+      const mailOptions = {
+        from: "eklavyasinghparihar7875@gmail.com",
+        to: "mudittandon202005@gmail.com",
+        subject: "Booking Confirmation",
+        text: `Thank you for booking comedy-shows from Cineverse.Here's your booking code ${booking_code}.`,
+      };
+      try {
+        const result = await transporter.sendMail(mailOptions);
+        console.log("email sent successfully");
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    if(bookingSuccess){
+    sendMail();
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 module.exports = {
-    bookings
-}
+  movieShowsBookings,
+};
