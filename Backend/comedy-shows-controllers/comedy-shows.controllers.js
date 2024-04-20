@@ -1,14 +1,15 @@
-const express = require("express");
 const db = require("../db/db.js");
 const sendMail = require("../middlewares/nodemailer.middleware.js");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const qrCode = require("qrcode");
+const fs = require('fs');
 const {
   generateRandomString,
   generateRandomString8,
   generateRandomCharacters,
 } = require("../utils/generateRandomStringOrNumber.js");
+const { qr } = require("qr-image");
 
 const getComedyShows = async (req, res) => {
   try {
@@ -52,8 +53,6 @@ const comedyShowsBookings = async (req, res) => {
       comedy_show_id: show_id,
     });
 
-    console.log(comedy_shows);
-
     if (comedy_shows.length === 0) {
       return res.send({
         status: 0,
@@ -73,6 +72,7 @@ const comedyShowsBookings = async (req, res) => {
       });
     } else {
       const booking_code = generateRandomCharacters(12);
+      console.log(booking_code);
       const totalPrice = parseInt(num_tickets * show_price);
       const bookingData = {
         show_id,
@@ -85,7 +85,8 @@ const comedyShowsBookings = async (req, res) => {
         total_price: totalPrice,
       };
       const bookingJsonString = JSON.stringify(bookingData);
-      const QRCode = await qrCode.toDataURL(bookingJsonString);
+      var qr_svg = qr.image(url);
+      qr_svg.pipe(fs.createWriteStream("qr_img.png"));
 
       const bookingSuccess = await db.transaction(async (trx) => {
         await trx("comedy_shows")
@@ -109,7 +110,7 @@ const comedyShowsBookings = async (req, res) => {
         from: "eklavyasinghparihar7875@gmail.com",
         to: "mudittandon202005@gmail.com",
         subject: "Booking Confirmation",
-        text: `Thank you for booking comedy-shows from Cineverse.Here's your booking code ${booking_code}.`,
+        text: `Thank you for booking comedy-shows from Cineverse.Here's your booking code and you can scan this QR ${qr_svg} for further details..`,
       };
       try {
         const result = await transporter.sendMail(mailOptions);
