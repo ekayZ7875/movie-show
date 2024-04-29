@@ -14,7 +14,8 @@ exports.up = function(knex) {
         table.integer('ticket_price').notNullable()
 })};
 
-/**
+
+ /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */

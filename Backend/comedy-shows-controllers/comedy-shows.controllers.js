@@ -11,22 +11,13 @@ const {
 } = require("../utils/generateRandomStringOrNumber.js");
 const { qr } = require("qr-image");
 
-const getComedyShows = async (req, res) => {
-  try {
-    const comedyShows = await db("comedy_shows").select(
-      "show_name",
-      "show_poster_URL"
-    );
-    res.json(comedyShows);
-  } catch (error) {
-    console.error(error);
-    res.json({ messsage: "Some error ocuured while getting shows" });
-  }
-};
+
 
 const getComedyShowDetails = async (req, res) => {
   try {
     const details = await db("comedy_shows").select(
+      "show_name",
+      "show_poster_URL",
       "venue",
       "show_timings",
       "available_seats",
