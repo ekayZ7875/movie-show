@@ -98,8 +98,8 @@ const comedyShowsBookings = async (req, res) => {
       });
 
       const mailOptions = {
-        from: "eklavyasinghparihar7875@gmail.com",
-        to: "mudittandon202005@gmail.com",
+        from:"sjvn2706@gmail.com",
+        to: "amarjain991@gmail.com@gmail.com",
         subject: "Booking Confirmation",
         text: `Thank you for booking comedy-shows from Cineverse.Here's your booking code and you can scan this QR ${qr_svg} for further details..`,
       };
