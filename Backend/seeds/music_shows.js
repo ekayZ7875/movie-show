@@ -4,7 +4,7 @@
  */
 exports.seed = async function(knex) {
   // Deletes ALL existing entries
-  await knex('music_shows').del()
+  await knex('music_shows').del();
   await knex('music_shows').insert([
     {
       music_show_id: 1,
