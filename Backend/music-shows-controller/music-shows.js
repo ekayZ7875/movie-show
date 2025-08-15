@@ -66,14 +66,14 @@ const musicShowsBookings = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "eklavyasinghparihar7875@gmail.com",
+          user: "sjvn2706@gmail.com",
           pass: "qnsqoemikkgsyutn",
         },
       });
 
       const mailOptions = {
-        from: "eklavyasinghparihar7875@gmail.com",
-        to: "mudittandon202005@gmail.com",
+        from: "sjvn2706@gmail.com",
+        to: "amarjain991@gmail.com",
         subject: "Booking Confirmation",
         text: `Thank you for booking music-shows from Cineverse.Here's your booking code ${booking_code}.`,
       };
