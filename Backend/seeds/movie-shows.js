@@ -17,7 +17,7 @@ exports.seed = function(knex) {
           movie_name: 'The Dark Knight', 
           movie_poster_URL: 'https://example.com/dark_knight_poster.jpg', 
           show_timings: '2024-04-13 20:00:00', 
-          theatre_name_location: 'XYZ Cinema - Los Angeles', 
+          theatre_name_location: 'xyz Cinema - Los Angeles', 
           available_seats: 150, 
           show_unique_ID: 'def456' ,
           ticket_price: 150.00,
