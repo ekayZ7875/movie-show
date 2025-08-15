@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const knex = require('knex')
 const db = require('./db/db.js')
 const bodyparser = require('body-parser')
