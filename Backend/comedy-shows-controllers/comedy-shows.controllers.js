@@ -92,7 +92,7 @@ const comedyShowsBookings = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "eklavyasinghparihar7875@gmail.com",
+          user: "sjvn2706@gmail.com",
           pass: "qnsqoemikkgsyutn",
         },
       });
