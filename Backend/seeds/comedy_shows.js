@@ -20,7 +20,7 @@ exports.seed = async function(knex) {
       comedy_show_id: 2,
       show_name: 'Laugh Factory',
       show_poster_URL: 'https://example.com/laugh-factory-poster.jpg',
-      show_timings: '2024-04-18 19:30:00',
+      show_timings: '2024-04-18 18:30:00',
       venue: 'Laugh Factory Theater',
       available_seats: 150,
       show_unique_ID: 'LF20240418',
