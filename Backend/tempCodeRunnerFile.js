@@ -4,7 +4,7 @@ app.post('/employee-register',async(req,res)=>{
 
         const hashedPassword_e = await bcrypt.hash(password_e,16)
 
-        await db('employees').insert({
+        await db("employees").insert({
             username_e,
             email_e,
             password_e:hashedPassword_e
