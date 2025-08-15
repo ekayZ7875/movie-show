@@ -22,12 +22,12 @@ async function sendMail(){
     const transporter  =nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'eklavyasinghparihar7875@gmail.com',
+            user:"sjvn2706@gmail.com',
             pass: 'qnsqoemikkgsyutn'
         }
     })
     const mailOptions = {
-        from: 'eklavyasinghpariharr7875@gmail.com',
+        from: "sjvn2706@gmail.com',
         to:'mudittandon202005@gmail.com',
         subject: 'Password Reset Request',
         text: `Your password reset token is: ${token}`,
