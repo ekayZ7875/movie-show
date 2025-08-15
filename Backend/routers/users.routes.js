@@ -10,7 +10,7 @@ const{getMusicShows,getMusicShowsDetails,musicShowsBookings} = require('../music
 
 
 
-const router = Router()
+const router = Router();
 
 
 router.route('/register-user').post(createUser)
