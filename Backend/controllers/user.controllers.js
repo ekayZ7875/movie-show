@@ -58,7 +58,7 @@ const logoutUser = async (req, res) => {
   jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
     if (error) {
       console.error(error);
-      res.status(404).json({ message: "invalid token" });
+      res.status(404).json({ message: "Invalid token" });
     }
     res.json({ message: "logout sucessfull" });
   });
